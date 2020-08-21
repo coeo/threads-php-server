@@ -15,7 +15,6 @@
           } else {
             array_splice($this->url_elements, $i, 1);
           }
-
         }
 
         $this->parseIncomingParams();
@@ -28,7 +27,6 @@
       } else {
         return false;
       }
-
     }
 
     public function parseIncomingParams() {
@@ -44,7 +42,8 @@
       $content_type = false;
       if(isset($_SERVER['CONTENT_TYPE'])) {
         $content_type = str_replace(';charset=UTF-8', '',  $_SERVER['CONTENT_TYPE']);
-      }      switch($content_type) {
+      }
+      switch($content_type) {
         case "application/json":
           $body_params = json_decode($body);
           if($body_params) {

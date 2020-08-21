@@ -3,17 +3,19 @@
 
   class ThreadsModel{
     public $searchTerm;
+    public $context;
 
     public function search(){
       if(isset($this->searchTerm)) {
         $this->searchTerm = sanitizeString($this->searchTerm);
-        $result = queryMySQL("SELECT name, address FROM threads WHERE name LIKE '$this->searchTerm'");
+        $result = queryMySQL("SELECT name, address FROM threads WHERE name LIKE '$this->searchTerm' AND context='$this->context'");
         $threads = array();
         if($result->num_rows != 0){
           while($row = $result->fetch_assoc()){
             $threads[] = array(
               'name' => $row['name'],
-              'address' => $row['address']
+              'address' => $row['address'],
+              'firstModerator' => $row['firstModerator']
             );
           }
         }
@@ -24,13 +26,14 @@
     }
 
     public function retrieve(){
-      $result = queryMySQL("SELECT name, address FROM threads");
+      $result = queryMySQL("SELECT name, address, firstModerator FROM threads WHERE context='$this->context'");
       $threads = array();
       if($result->num_rows != 0){
         while($row = $result->fetch_assoc()){
           $threads[] = array(
             'name' => $row['name'],
-            'address' => $row['address']
+            'address' => $row['address'],
+            'firstModerator' => $row['firstModerator']
           );
         }
       }
